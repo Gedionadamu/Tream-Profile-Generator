@@ -6,10 +6,11 @@ const Manager = require("./lib/Manager")
 const Intern = require("./lib/intern")
 const generateHTML = require("./src/generateHTML")
 
+// an empty array to get all data collected from user
 var allinput = []
 
 
-// Array of  Employee questions for user input
+// Array of  Manager questions for user input
 const questions = () => {
     return inquirer.prompt([
         {
@@ -52,7 +53,7 @@ const questions = () => {
     
 }
 
-// Array of  Employee questions for user input
+// Array of  Engineer questions for user input
 const questionsengineer = () => {
     return inquirer.prompt([
         {
@@ -93,8 +94,11 @@ const questionsengineer = () => {
         
     ])
     .then((data)=> {
-                    const engineer = new Engineer(data)
+        // created new intern based on the data given
+                    const engineer = new Engineer(data.name, data.id, data.email, data.github)
+                    // pushed the data taken from the questionare to an empty array
                     allinput.push(engineer)
+                    // calls a function to chose question based on the user input choice to add employee or finish building team.
                     choices(data.addEmployee[0])
                    
     })
@@ -104,7 +108,7 @@ const questionsengineer = () => {
 }
 
 
-// Array of  Employee questions for user input
+// Array of  Intern questions for user input
 const questionsintern = () => {
     return inquirer.prompt([
         {
@@ -145,9 +149,11 @@ const questionsintern = () => {
         
     ])
     .then((data)=> { 
-                    const intern = new Intern(data);
-                    console.log(intern.getRole(allinput))
-                     allinput.push(intern)
+                // created new intern based on the data given
+                    const intern = new Intern(data.name, data.id, data.email, data.school);
+                    // pushed the data taken from the questionare to an empty array
+                    allinput.push(intern)
+                    // calls a function to chose question based on the user input choice to add employee or finish building team.
                     choices(data.addEmployee[0])
                         
                         
@@ -155,7 +161,8 @@ const questionsintern = () => {
     })
 }
 
-
+// function to choose question based on user input to add employee or finish building team
+// if user chooses to finish building team it will create the team profile html file.
 function choices (choice){
     
     if(choice === "Engineer"){
@@ -165,8 +172,9 @@ function choices (choice){
         return questionsintern();
     }
     else {
+        // Use writeFileSync method to use promises instead of a callback function
         fs.writeFileSync('Team Profile.html', generateHTML(allinput))
-        // console.log(allinput)
+       
         console.log('Successfully Generated Team Profile!')
     }
 }
@@ -176,19 +184,21 @@ function choices (choice){
 const init = () => {
     
     questions()
-      // Use writeFileSync method to use promises instead of a callback function
-    //   .then((data) => fs.writeFileSync('Team Profile.html', generateMarkdown(data)))
-    // .then((data) => console.log(data))
+      
+    
     
     .then((data) => {
-        const manager = new Manager(data)
+        // created new manager based on the data given
+        const manager = new Manager(data.name, data.id, data.email, data.office)
+        // pushed the data taken from the questionare to an empty array
         allinput.push(manager)
+        // calls a function to chose question based on the user input choice to add employee or finish building team. 
         choices(data.addEmployee[0])
         
-        console.log(manager)
+        // console.log(manager)
         return data
     })
-    // .then((allinput) => fs.writeFileSync('Team Profile.html', generateHTML(allinput)))
+   
     
    
     .catch((err) => console.error(err));

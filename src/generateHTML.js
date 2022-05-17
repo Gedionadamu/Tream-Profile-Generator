@@ -1,17 +1,35 @@
 
 var  card = []
+// switches what is rendered on the page based on the employee role
+function changerole (data,i){
+    if(data[i].getrole()=== "Manager"){
+        return `office No :${data[i].getofficeno()}`
+    }
+    else if (data[i].getrole()=== "Engineer"){
+        return `GitHub : ${data[i].getgithub()}`
+    }
+    else{
+        return `School: ${data[i].getschool()}`
+    }
+}
+// generates cards for each employee so that i can be displayed
 function generateCards(data){
     for( var i=0; i < data.length; i++){
-        // if()
+        
        card.push( `<div class="col">
         <div class="card" style="width: 18rem;">
             <div class="card-header">
-                ${data[i].name.name}
+                ${data[i].getName()}
+                </br>
+                ${data[i].getrole()}
+
+                
+
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">ID : ${data[i].name.id}</li>
-                <li class="list-group-item">Email :<a href = "mailto:${data[i].name.email}">${data[i].name.email}</a></li>
-                <li class="list-group-item">PLACEHOLDER</li>
+                <li class="list-group-item">ID : ${data[i].getName()}</li>
+                <li class="list-group-item">Email :<a href = "mailto:${data[i].getEmail()}">${data[i].getEmail()}</a></li>
+                <li class="list-group-item">${changerole(data,i)}</li>
             </ul>
         </div>
     </div>`)
@@ -20,7 +38,7 @@ function generateCards(data){
     return card.join()
 }
 
-
+// generated HTTML so all data can be rendered in DOM
 function generateHTML (data){
     return `<!DOCTYPE html>
     <html lang="en">
